@@ -3,7 +3,10 @@ package com.dharaneesh.trade_nest.controller;
 
 import com.dharaneesh.trade_nest.model.Category;
 import com.dharaneesh.trade_nest.service.CategoryService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -17,30 +20,42 @@ public class CategoryController {
     }
 
     @GetMapping("/api/public/categories")
-    public List<Category> getAllCategory()
+    public ResponseEntity<List<Category>> getAllCategory()
     {
         List<Category> categoryList=categoryService.getAllCategory();
-        return categoryList;
+        return new ResponseEntity<>(categoryList, HttpStatus.OK);
     }
 
     @PostMapping("/api/admin/categories")
-    public String addCategory(@RequestBody Category category)
+    public ResponseEntity<String> addCategory(@RequestBody Category category)
     {
         categoryService.addCategory(category);
-        return "Category added successfully.";
+        return new ResponseEntity<>("Category added successfully.",HttpStatus.CREATED);
     }
 
     @DeleteMapping("/api/admin/categories/{categoryId}")
-    public String deleteCategory(@PathVariable Long categoryId)
+    public ResponseEntity<String> deleteCategory(@PathVariable Long categoryId)
     {
-        String deletedCategory=categoryService.deleteCategory(categoryId);
-        return deletedCategory;
+       try {
+           String deletedCategory=categoryService.deleteCategory(categoryId);
+           return new ResponseEntity<>(deletedCategory,HttpStatus.OK);
+       }
+       catch (ResponseStatusException e)
+       {
+           return new ResponseEntity<>(e.getMessage(),e.getStatusCode());
+       }
     }
 
     @PutMapping("/api/admin/categories/{categoryId}")
-    public String updateCategory(@PathVariable Long categoryId,@RequestBody Category category)
+    public ResponseEntity<String> updateCategory(@PathVariable Long categoryId,@RequestBody Category category)
     {
-        String updateCategory=categoryService.updateCategory(categoryId,category);
-        return updateCategory;
+        try {
+            String updateCategory=categoryService.updateCategory(categoryId,category);
+            return new ResponseEntity<>(updateCategory,HttpStatus.OK);
+        }
+        catch (ResponseStatusException e)
+        {
+            return new ResponseEntity<>(e.getMessage(),e.getStatusCode());
+        }
     }
 }

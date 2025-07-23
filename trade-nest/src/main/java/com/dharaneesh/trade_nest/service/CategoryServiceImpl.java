@@ -1,7 +1,9 @@
 package com.dharaneesh.trade_nest.service;
 
 import com.dharaneesh.trade_nest.model.Category;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,33 +29,21 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public String deleteCategory(Long categoryId) {
 
-        Category category=categoryList.stream().filter(c->c.getCategoryId().equals(categoryId)).findFirst().orElse(null);
-
-        if(category!=null)
-        {
+        Category category=categoryList.stream().filter(c->c.getCategoryId().equals(categoryId))
+                .findFirst().orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"Resource not found"));
             categoryList.remove(category);
             return "Category deleted successfully.";
         }
-        else
-        {
-            return "Category not found";
-        }
-    }
 
     @Override
     public String updateCategory(Long categoryId, Category category) {
 
-        Optional<Category> optionalCategory=categoryList.stream().filter(c->c.getCategoryId().equals(categoryId)).findFirst();
-
-        if(optionalCategory.isPresent())
-        {
-            Category updateCategory=optionalCategory.get();
-            updateCategory.setCategoryName(category.getCategoryName());
-            return "Category updated successfully.";
-        }
-        else
-        {
-            return "Category not found";
-        }
+        Category updateCategory=categoryList.stream().filter(c->c.getCategoryId().equals(categoryId)).findFirst()
+                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"Resource not found"));
+        updateCategory.setCategoryName(category.getCategoryName());
+        return "Category updated successfully.";
     }
 }
+
+
+
