@@ -10,6 +10,7 @@ import java.util.List;
 public class CategoryServiceImpl implements CategoryService{
 
     private final List<Category> categoryList=new ArrayList<>();
+    private Long categoryId=1l;
 
     @Override
     public List<Category> getAllCategory() {
@@ -18,6 +19,7 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public void addCategory(Category category) {
+        category.setCategoryId(categoryId++);
         categoryList.add(category);
     }
 }
