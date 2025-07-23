@@ -4,6 +4,8 @@ package com.dharaneesh.trade_nest.controller;
 import com.dharaneesh.trade_nest.model.Category;
 import com.dharaneesh.trade_nest.service.CategoryService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -22,5 +24,12 @@ public class CategoryController {
     {
         List<Category> categoryList=categoryService.getAllCategory();
         return categoryList;
+    }
+
+    @PostMapping("/api/admin/categories")
+    public String addCategory(@RequestBody Category category)
+    {
+        categoryService.addCategory(category);
+        return "Category added successfully.";
     }
 }

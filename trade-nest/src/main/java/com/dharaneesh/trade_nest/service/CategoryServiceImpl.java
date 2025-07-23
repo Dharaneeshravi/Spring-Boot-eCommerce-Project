@@ -15,4 +15,9 @@ public class CategoryServiceImpl implements CategoryService{
     public List<Category> getAllCategory() {
         return categoryList;
     }
+
+    @Override
+    public void addCategory(Category category) {
+        categoryList.add(category);
+    }
 }
