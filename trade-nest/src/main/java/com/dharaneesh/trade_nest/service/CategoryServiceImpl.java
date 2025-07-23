@@ -10,4 +10,9 @@ import java.util.List;
 public class CategoryServiceImpl implements CategoryService{
 
     private final List<Category> categoryList=new ArrayList<>();
+
+    @Override
+    public List<Category> getAllCategory() {
+        return categoryList;
+    }
 }
