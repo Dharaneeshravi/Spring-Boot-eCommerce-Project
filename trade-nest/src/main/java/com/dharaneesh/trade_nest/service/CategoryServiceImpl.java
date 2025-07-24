@@ -31,20 +31,14 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public String deleteCategory(Long categoryId) {
-
-        List<Category> categoryList=categoryRepository.findAll();
-        Category category=categoryList.stream().filter(c->c.getCategoryId().equals(categoryId))
-                .findFirst().orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"Resource not found"));
+        Category category=categoryRepository.findById(categoryId).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"Resource not found"));
             categoryRepository.delete(category);
             return "Category deleted successfully.";
         }
 
     @Override
     public String updateCategory(Long categoryId, Category category) {
-
-        List<Category> categoryList=categoryRepository.findAll();
-        Category updateCategory=categoryList.stream().filter(c->c.getCategoryId().equals(categoryId)).findFirst()
-                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"Resource not found"));
+        Category updateCategory=categoryRepository.findById(categoryId).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"Resource not found"));
         updateCategory.setCategoryName(category.getCategoryName());
         categoryRepository.save(updateCategory);
         return "Category updated successfully.";
