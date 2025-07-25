@@ -1,5 +1,6 @@
 package com.dharaneesh.trade_nest.service;
 
+import com.dharaneesh.trade_nest.exception.APIException;
 import com.dharaneesh.trade_nest.exception.ResourceNotFoundException;
 import com.dharaneesh.trade_nest.model.Category;
 import com.dharaneesh.trade_nest.repository.CategoryRepository;
@@ -19,12 +20,26 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public List<Category> getAllCategory() {
+
+        List<Category> categoryList=categoryRepository.findAll();
+
+        if(categoryList.isEmpty())
+        {
+            throw new APIException("No categories available at this time.");
+        }
         return categoryRepository.findAll();
     }
 
     @Override
     public void addCategory(Category category) {
-       categoryRepository.save(category);
+
+        Category response=categoryRepository.findByCategoryName(category.getCategoryName());
+
+        if(response!=null)
+        {
+            throw new APIException("Duplicate category name. Please choose a different name.");
+        }
+        categoryRepository.save(category);
     }
 
     @Override
