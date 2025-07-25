@@ -4,6 +4,7 @@ package com.dharaneesh.trade_nest.controller;
 import com.dharaneesh.trade_nest.model.Category;
 import com.dharaneesh.trade_nest.service.CategoryService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +14,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-@AllArgsConstructor
 public class CategoryController {
 
-    private final CategoryService categoryService;
+    @Autowired
+    private  CategoryService categoryService;
 
 
     @GetMapping("/public/categories")

@@ -11,11 +11,10 @@ import java.util.List;
 
 
 @Service
-@AllArgsConstructor
 public class CategoryServiceImpl implements CategoryService{
 
   @Autowired
-  private final CategoryRepository categoryRepository;
+  private  CategoryRepository categoryRepository;
 
     @Override
     public List<Category> getAllCategory() {
