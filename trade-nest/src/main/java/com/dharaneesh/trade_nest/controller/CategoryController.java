@@ -36,7 +36,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/admin/categories/{categoryId}")
-    public ResponseEntity<String> deleteCategory(@PathVariable Long categoryId)
+    public ResponseEntity<String> deleteCategory(@Valid @PathVariable Long categoryId)
     {
        try {
            String deletedCategory=categoryService.deleteCategory(categoryId);
@@ -49,7 +49,7 @@ public class CategoryController {
     }
 
     @PutMapping("/admin/categories/{categoryId}")
-    public ResponseEntity<String> updateCategory(@PathVariable Long categoryId,@RequestBody Category category)
+    public ResponseEntity<String> updateCategory(@Valid @PathVariable Long categoryId,@RequestBody Category category)
     {
         try {
             String updateCategory=categoryService.updateCategory(categoryId,category);

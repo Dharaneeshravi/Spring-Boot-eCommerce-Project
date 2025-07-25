@@ -1,5 +1,6 @@
 package com.dharaneesh.trade_nest.service;
 
+import com.dharaneesh.trade_nest.exception.ResourceNotFoundException;
 import com.dharaneesh.trade_nest.model.Category;
 import com.dharaneesh.trade_nest.repository.CategoryRepository;
 import lombok.AllArgsConstructor;
@@ -28,14 +29,14 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public String deleteCategory(Long categoryId) {
-        Category category=categoryRepository.findById(categoryId).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"Resource not found"));
+        Category category=categoryRepository.findById(categoryId).orElseThrow(()->new ResourceNotFoundException(categoryId,"categoryId","Category"));
             categoryRepository.delete(category);
             return "Category deleted successfully.";
         }
 
     @Override
     public String updateCategory(Long categoryId, Category category) {
-        Category updateCategory=categoryRepository.findById(categoryId).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"Resource not found"));
+        Category updateCategory=categoryRepository.findById(categoryId).orElseThrow(()->new ResourceNotFoundException(categoryId,"categoryId","Category"));
         updateCategory.setCategoryName(category.getCategoryName());
         categoryRepository.save(updateCategory);
         return "Category updated successfully.";
