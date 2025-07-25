@@ -1,16 +1,12 @@
 package com.dharaneesh.trade_nest.controller;
 
-
 import com.dharaneesh.trade_nest.model.Category;
 import com.dharaneesh.trade_nest.service.CategoryService;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-
 import java.util.List;
 
 @RestController
@@ -38,26 +34,14 @@ public class CategoryController {
     @DeleteMapping("/admin/categories/{categoryId}")
     public ResponseEntity<String> deleteCategory(@Valid @PathVariable Long categoryId)
     {
-       try {
            String deletedCategory=categoryService.deleteCategory(categoryId);
            return new ResponseEntity<>(deletedCategory,HttpStatus.OK);
-       }
-       catch (ResponseStatusException e)
-       {
-           return new ResponseEntity<>(e.getMessage(),e.getStatusCode());
-       }
     }
 
     @PutMapping("/admin/categories/{categoryId}")
     public ResponseEntity<String> updateCategory(@Valid @PathVariable Long categoryId,@RequestBody Category category)
     {
-        try {
             String updateCategory=categoryService.updateCategory(categoryId,category);
             return new ResponseEntity<>(updateCategory,HttpStatus.OK);
-        }
-        catch (ResponseStatusException e)
-        {
-            return new ResponseEntity<>(e.getMessage(),e.getStatusCode());
-        }
     }
 }
