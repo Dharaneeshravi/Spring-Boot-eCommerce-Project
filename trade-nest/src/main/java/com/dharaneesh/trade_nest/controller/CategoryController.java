@@ -3,6 +3,7 @@ package com.dharaneesh.trade_nest.controller;
 
 import com.dharaneesh.trade_nest.model.Category;
 import com.dharaneesh.trade_nest.service.CategoryService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,7 @@ public class CategoryController {
     }
 
     @PostMapping("/admin/categories")
-    public ResponseEntity<String> addCategory(@RequestBody Category category)
+    public ResponseEntity<String> addCategory(@Valid @RequestBody Category category)
     {
         categoryService.addCategory(category);
         return new ResponseEntity<>("Category added successfully.",HttpStatus.CREATED);
