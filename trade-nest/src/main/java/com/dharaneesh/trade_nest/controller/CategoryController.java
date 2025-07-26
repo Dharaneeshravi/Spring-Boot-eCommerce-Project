@@ -22,10 +22,12 @@ public class CategoryController {
     @GetMapping("/public/categories")
     public ResponseEntity<CategoryResponse> getAllCategory(
             @RequestParam(name ="pageNumber",defaultValue = "0",required = false) Integer pageNumber,
-            @RequestParam(name = "pageSize",defaultValue ="1",required = false) Integer pageSize
+            @RequestParam(name = "pageSize",defaultValue ="1",required = false) Integer pageSize,
+            @RequestParam(name = "sortOrder",defaultValue ="asc",required = false) String sortOrder,
+            @RequestParam(name = "sortBy",defaultValue = "categoryId",required = false) String sortBy
     )
     {
-        CategoryResponse categoryList=categoryService.getAllCategory(pageNumber,pageSize);
+        CategoryResponse categoryList=categoryService.getAllCategory(pageNumber,pageSize,sortOrder,sortBy);
         return new ResponseEntity<>(categoryList, HttpStatus.OK);
     }
 

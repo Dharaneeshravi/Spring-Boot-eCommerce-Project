@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -29,9 +30,10 @@ public class CategoryServiceImpl implements CategoryService{
   private ModelMapper modelMapper;
 
     @Override
-    public CategoryResponse getAllCategory(Integer pageNumber,Integer pageSize) {
+    public CategoryResponse getAllCategory(Integer pageNumber,Integer pageSize,String sortOrder,String sortBy) {
 
-        Pageable page= PageRequest.of(pageNumber,pageSize);
+        Sort sort=sortOrder.equalsIgnoreCase("asc")? Sort.by(sortBy).ascending():Sort.by(sortBy).descending();
+        Pageable page= PageRequest.of(pageNumber,pageSize,sort);
         Page<Category> categoryPage=categoryRepository.findAll(page);
         List<Category> categoryList=categoryPage.getContent();
 
