@@ -1,5 +1,6 @@
 package com.dharaneesh.trade_nest.controller;
 
+import com.dharaneesh.trade_nest.config.AppConstance;
 import com.dharaneesh.trade_nest.model.Category;
 import com.dharaneesh.trade_nest.payload.CategoryDTO;
 import com.dharaneesh.trade_nest.payload.CategoryResponse;
@@ -21,10 +22,10 @@ public class CategoryController {
 
     @GetMapping("/public/categories")
     public ResponseEntity<CategoryResponse> getAllCategory(
-            @RequestParam(name ="pageNumber",defaultValue = "0",required = false) Integer pageNumber,
-            @RequestParam(name = "pageSize",defaultValue ="1",required = false) Integer pageSize,
-            @RequestParam(name = "sortOrder",defaultValue ="asc",required = false) String sortOrder,
-            @RequestParam(name = "sortBy",defaultValue = "categoryId",required = false) String sortBy
+            @RequestParam(name ="pageNumber",defaultValue = AppConstance.PAGE_NUMBER,required = false) Integer pageNumber,
+            @RequestParam(name = "pageSize",defaultValue =AppConstance.PAGE_SIZE,required = false) Integer pageSize,
+            @RequestParam(name = "sortOrder",defaultValue =AppConstance.SORT_ORDER,required = false) String sortOrder,
+            @RequestParam(name = "sortBy",defaultValue =AppConstance.SORT_BY,required = false) String sortBy
     )
     {
         CategoryResponse categoryList=categoryService.getAllCategory(pageNumber,pageSize,sortOrder,sortBy);
