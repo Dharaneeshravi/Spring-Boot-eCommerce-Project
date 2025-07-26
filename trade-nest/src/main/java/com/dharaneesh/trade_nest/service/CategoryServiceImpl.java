@@ -43,7 +43,9 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
-    public void addCategory(Category category) {
+    public CategoryDTO addCategory(CategoryDTO categoryDTO) {
+
+        Category category=modelMapper.map(categoryDTO,Category.class);
 
         Category response=categoryRepository.findByCategoryName(category.getCategoryName());
 
@@ -51,7 +53,8 @@ public class CategoryServiceImpl implements CategoryService{
         {
             throw new APIException("Duplicate category name. Please choose a different name.");
         }
-        categoryRepository.save(category);
+       Category addStatus= categoryRepository.save(category);
+        return modelMapper.map(addStatus,CategoryDTO.class);
     }
 
     @Override

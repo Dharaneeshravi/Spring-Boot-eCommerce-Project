@@ -1,6 +1,7 @@
 package com.dharaneesh.trade_nest.controller;
 
 import com.dharaneesh.trade_nest.model.Category;
+import com.dharaneesh.trade_nest.payload.CategoryDTO;
 import com.dharaneesh.trade_nest.payload.CategoryResponse;
 import com.dharaneesh.trade_nest.service.CategoryService;
 import jakarta.validation.Valid;
@@ -26,10 +27,10 @@ public class CategoryController {
     }
 
     @PostMapping("/admin/categories")
-    public ResponseEntity<String> addCategory(@Valid @RequestBody Category category)
+    public ResponseEntity<CategoryDTO> addCategory(@Valid @RequestBody CategoryDTO categoryDTO)
     {
-        categoryService.addCategory(category);
-        return new ResponseEntity<>("Category added successfully.",HttpStatus.CREATED);
+        CategoryDTO status= categoryService.addCategory(categoryDTO);
+        return new ResponseEntity<>(status,HttpStatus.CREATED);
     }
 
     @DeleteMapping("/admin/categories/{categoryId}")
