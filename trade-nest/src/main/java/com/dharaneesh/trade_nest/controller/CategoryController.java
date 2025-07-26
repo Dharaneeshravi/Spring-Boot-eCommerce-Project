@@ -1,6 +1,7 @@
 package com.dharaneesh.trade_nest.controller;
 
 import com.dharaneesh.trade_nest.model.Category;
+import com.dharaneesh.trade_nest.payload.CategoryResponse;
 import com.dharaneesh.trade_nest.service.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +19,9 @@ public class CategoryController {
 
 
     @GetMapping("/public/categories")
-    public ResponseEntity<List<Category>> getAllCategory()
+    public ResponseEntity<CategoryResponse> getAllCategory()
     {
-        List<Category> categoryList=categoryService.getAllCategory();
+        CategoryResponse categoryList=categoryService.getAllCategory();
         return new ResponseEntity<>(categoryList, HttpStatus.OK);
     }
 
