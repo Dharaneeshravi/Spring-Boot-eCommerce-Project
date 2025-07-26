@@ -11,6 +11,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class ProductServiceImpl implements ProductService{
 
@@ -34,5 +37,16 @@ public class ProductServiceImpl implements ProductService{
         product.setSpecialPrice(specialPrice);
         Product addStatus=productRepository.save(product);
         return modelMapper.map(addStatus,ProductDTO.class);
+    }
+
+    @Override
+    public ProductResponse getAllProduct() {
+
+        List<Product> productList=productRepository.findAll();
+        List<ProductDTO> productDTOS=productList.stream()
+                .map(product -> modelMapper.map(product,ProductDTO.class)).collect(Collectors.toList());
+        ProductResponse productResponse=new ProductResponse();
+        productResponse.setContent(productDTOS);
+        return productResponse;
     }
 }

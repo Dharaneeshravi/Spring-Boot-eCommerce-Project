@@ -5,4 +5,6 @@ import com.dharaneesh.trade_nest.payload.ProductResponse;
 
 public interface ProductService {
     ProductDTO addProduct(Long categoryId, ProductDTO productDTO);
+
+    ProductResponse getAllProduct();
 }

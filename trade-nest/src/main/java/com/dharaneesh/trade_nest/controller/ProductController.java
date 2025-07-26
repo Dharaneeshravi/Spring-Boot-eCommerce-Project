@@ -1,6 +1,7 @@
 package com.dharaneesh.trade_nest.controller;
 
 import com.dharaneesh.trade_nest.payload.ProductDTO;
+import com.dharaneesh.trade_nest.payload.ProductResponse;
 import com.dharaneesh.trade_nest.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,5 +21,12 @@ public class ProductController {
     {
         ProductDTO addStatus=productService.addProduct(categoryId,productDTO);
         return new ResponseEntity<>(addStatus, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/public/products")
+    public ResponseEntity<ProductResponse> getAllProduct()
+    {
+        ProductResponse getStatus=productService.getAllProduct();
+        return new ResponseEntity<>(getStatus,HttpStatus.OK);
     }
 }
