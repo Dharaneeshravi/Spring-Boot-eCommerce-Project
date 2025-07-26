@@ -9,6 +9,9 @@ import com.dharaneesh.trade_nest.repository.CategoryRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -26,9 +29,11 @@ public class CategoryServiceImpl implements CategoryService{
   private ModelMapper modelMapper;
 
     @Override
-    public CategoryResponse getAllCategory() {
+    public CategoryResponse getAllCategory(Integer pageNumber,Integer pageSize) {
 
-        List<Category> categoryList=categoryRepository.findAll();
+        Pageable page= PageRequest.of(pageNumber,pageSize);
+        Page<Category> categoryPage=categoryRepository.findAll(page);
+        List<Category> categoryList=categoryPage.getContent();
 
         if(categoryList.isEmpty())
         {
@@ -38,6 +43,8 @@ public class CategoryServiceImpl implements CategoryService{
                 .map(category ->modelMapper.map(category,CategoryDTO.class)).collect(Collectors.toList());
         CategoryResponse categoryResponse=new CategoryResponse();
         categoryResponse.setContent(categoryDTOS);
+        categoryResponse.setPageNumber(pageNumber);
+        categoryResponse.setPageSize(pageSize);
         return categoryResponse;
 
     }

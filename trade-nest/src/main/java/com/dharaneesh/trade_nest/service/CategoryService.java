@@ -7,7 +7,7 @@ import com.dharaneesh.trade_nest.payload.CategoryResponse;
 import java.util.List;
 
 public interface CategoryService {
-    CategoryResponse getAllCategory();
+    CategoryResponse getAllCategory(Integer pageNumber,Integer pageSize);
 
     CategoryDTO addCategory(CategoryDTO categoryDTO);
 
