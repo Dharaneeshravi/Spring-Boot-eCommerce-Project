@@ -9,6 +9,7 @@ import com.dharaneesh.trade_nest.repository.CategoryRepository;
 import com.dharaneesh.trade_nest.repository.ProductRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,6 +32,12 @@ public class ProductServiceImpl implements ProductService{
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private FileService fileService;
+
+    @Value("${project.image}")
+    private String path;
 
     @Override
     public ProductDTO addProduct(Long categoryId, ProductDTO productDTO) {
@@ -110,29 +117,9 @@ public class ProductServiceImpl implements ProductService{
 
         Product product=productRepository.findById(productId)
                 .orElseThrow(()->new ResourceNotFoundException(productId,"productId","Product"));
-
-        String path="images/";
-        String fileName=uploadImage(path,image);
+        String fileName=fileService.uploadImage(path,image);
         product.setImage(fileName);
         Product updateImage=productRepository.save(product);
         return modelMapper.map(updateImage,ProductDTO.class);
-    }
-
-    private String uploadImage(String path, MultipartFile file) throws IOException {
-
-        String originalFileName=file.getOriginalFilename();
-        String randomId=UUID.randomUUID().toString();
-        String fileName=randomId.concat(originalFileName.substring(originalFileName.lastIndexOf('.')));
-        String filePath=path+File.separator+fileName;
-
-        File folder=new File(path);
-
-        if(!folder.exists())
-        {
-            folder.mkdir();
-        }
-
-        Files.copy(file.getInputStream(),Paths.get(filePath));
-        return fileName;
     }
 }
