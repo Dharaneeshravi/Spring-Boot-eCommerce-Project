@@ -1,7 +1,6 @@
 package com.dharaneesh.trade_nest.controller;
 
 import com.dharaneesh.trade_nest.config.AppConstance;
-import com.dharaneesh.trade_nest.model.Category;
 import com.dharaneesh.trade_nest.payload.CategoryDTO;
 import com.dharaneesh.trade_nest.payload.CategoryResponse;
 import com.dharaneesh.trade_nest.service.CategoryService;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -25,7 +23,7 @@ public class CategoryController {
             @RequestParam(name ="pageNumber",defaultValue = AppConstance.PAGE_NUMBER,required = false) Integer pageNumber,
             @RequestParam(name = "pageSize",defaultValue =AppConstance.PAGE_SIZE,required = false) Integer pageSize,
             @RequestParam(name = "sortOrder",defaultValue =AppConstance.SORT_ORDER,required = false) String sortOrder,
-            @RequestParam(name = "sortBy",defaultValue =AppConstance.SORT_BY,required = false) String sortBy
+            @RequestParam(name = "sortBy",defaultValue =AppConstance.SORT_CATEGORY_BY,required = false) String sortBy
     )
     {
         CategoryResponse categoryList=categoryService.getAllCategory(pageNumber,pageSize,sortOrder,sortBy);

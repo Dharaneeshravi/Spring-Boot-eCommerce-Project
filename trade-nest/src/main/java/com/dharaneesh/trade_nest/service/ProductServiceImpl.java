@@ -11,6 +11,10 @@ import com.dharaneesh.trade_nest.repository.ProductRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -73,9 +77,12 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public ProductResponse getAllProduct() {
+    public ProductResponse getAllProduct(Integer pageNumber,Integer pageSize,String sortOrder,String sortBy) {
 
-        List<Product> productList=productRepository.findAll();
+        Sort sort=sortOrder.equalsIgnoreCase("asc")?Sort.by(sortBy).ascending():Sort.by(sortBy).descending();
+        Pageable pageable= PageRequest.of(pageNumber,pageSize,sort);
+        Page<Product> productPage=productRepository.findAll(pageable);
+        List<Product> productList=productPage.getContent();
 
         if(productList.isEmpty())
         {
@@ -85,6 +92,11 @@ public class ProductServiceImpl implements ProductService{
                 .map(product -> modelMapper.map(product,ProductDTO.class)).collect(Collectors.toList());
         ProductResponse productResponse=new ProductResponse();
         productResponse.setContent(productDTOS);
+        productResponse.setPageNumber(productPage.getNumber());
+        productResponse.setPageSize(productPage.getSize());
+        productResponse.setTotalElement(productPage.getTotalElements());
+        productResponse.setTotalPage(productPage.getTotalPages());
+        productResponse.setLastPage(productPage.isLast());
         return productResponse;
     }
 

@@ -1,5 +1,6 @@
 package com.dharaneesh.trade_nest.controller;
 
+import com.dharaneesh.trade_nest.config.AppConstance;
 import com.dharaneesh.trade_nest.payload.ProductDTO;
 import com.dharaneesh.trade_nest.payload.ProductResponse;
 import com.dharaneesh.trade_nest.service.ProductService;
@@ -27,9 +28,14 @@ public class ProductController {
     }
 
     @GetMapping("/public/products")
-    public ResponseEntity<ProductResponse> getAllProduct()
+    public ResponseEntity<ProductResponse> getAllProduct(
+            @RequestParam(name = "pageNumber",defaultValue = AppConstance.PAGE_NUMBER,required = false) Integer pageNumber,
+            @RequestParam(name = "pageSize",defaultValue = AppConstance.PAGE_SIZE,required = false) Integer pageSize,
+            @RequestParam(name = "sortOrder",defaultValue = AppConstance.SORT_ORDER,required = false) String sortOrder,
+            @RequestParam(name = "soryBy",defaultValue = AppConstance.SORT_PRODUCT_BY,required = false) String sortBy
+    )
     {
-        ProductResponse getStatus=productService.getAllProduct();
+        ProductResponse getStatus=productService.getAllProduct(pageNumber,pageSize,sortOrder,sortBy);
         return new ResponseEntity<>(getStatus,HttpStatus.OK);
     }
 
