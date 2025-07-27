@@ -40,9 +40,15 @@ public class ProductController {
     }
 
     @GetMapping("/public/categories/{categoryId}/product")
-    public ResponseEntity<ProductResponse> getProductByCategory(@PathVariable Long categoryId)
+    public ResponseEntity<ProductResponse> getProductByCategory(
+            @PathVariable Long categoryId,
+            @RequestParam(name = "pageNumber",defaultValue = AppConstance.PAGE_NUMBER,required = false) Integer pageNumber,
+            @RequestParam(name = "pageSize",defaultValue = AppConstance.PAGE_SIZE,required = false) Integer pageSize,
+            @RequestParam(name = "sortOrder",defaultValue = AppConstance.SORT_ORDER,required = false) String sortOrder,
+            @RequestParam(name = "soryBy",defaultValue = AppConstance.SORT_PRODUCT_BY,required = false) String sortBy
+    )
     {
-        ProductResponse getStatus=productService.getProductByCategory(categoryId);
+        ProductResponse getStatus=productService.getProductByCategory(categoryId,pageNumber,pageSize,sortOrder,sortBy);
         return new ResponseEntity<>(getStatus,HttpStatus.OK);
     }
 

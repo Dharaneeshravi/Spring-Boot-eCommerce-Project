@@ -17,13 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -101,11 +96,16 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public ProductResponse getProductByCategory(Long categoryId) {
+    public ProductResponse getProductByCategory(Long categoryId,Integer pageNumber,Integer pageSize,String sortOrder,String sortBy) {
 
         Category category=categoryRepository.findById(categoryId)
                 .orElseThrow(()->new ResourceNotFoundException(categoryId,"categoryId","Category"));
-        List<Product> productList=productRepository.findByCategoryOrderByPriceAsc(category);
+
+        Sort sort=sortOrder.equalsIgnoreCase("asc")?Sort.by(sortBy).ascending():Sort.by(sortBy).descending();
+        Pageable pageable= PageRequest.of(pageNumber,pageSize,sort);
+        Page<Product> productPage=productRepository.findByCategoryOrderByPriceAsc(category,pageable);
+        List<Product> productList=productPage.getContent();
+
         if(productList.isEmpty())
         {
             throw new APIException("No products available at this time.");
@@ -113,6 +113,11 @@ public class ProductServiceImpl implements ProductService{
         List<ProductDTO> productDTOS=productList.stream().map(product -> modelMapper.map(product,ProductDTO.class)).collect(Collectors.toList());
         ProductResponse productResponse=new ProductResponse();
         productResponse.setContent(productDTOS);
+        productResponse.setPageNumber(productPage.getNumber());
+        productResponse.setPageSize(productPage.getSize());
+        productResponse.setTotalElement(productPage.getTotalElements());
+        productResponse.setTotalPage(productPage.getTotalPages());
+        productResponse.setLastPage(productPage.isLast());
         return productResponse;
 
     }
