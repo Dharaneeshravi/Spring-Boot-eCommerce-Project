@@ -123,9 +123,12 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public ProductResponse getProductByKeyword(String keyword) {
+    public ProductResponse getProductByKeyword(String keyword, Integer pageNumber, Integer pageSize, String sortOrder, String sortBy) {
 
-        List<Product> productList=productRepository.findByProductNameLikeIgnoreCase("%"+keyword+"%");
+        Sort sort=sortOrder.equalsIgnoreCase("asc")?Sort.by(sortBy).ascending():Sort.by(sortBy).descending();
+        Pageable pageable= PageRequest.of(pageNumber,pageSize,sort);
+        Page<Product> productPage=productRepository.findByProductNameLikeIgnoreCase("%"+keyword+"%",pageable);
+        List<Product> productList=productPage.getContent();
 
         if(productList.isEmpty())
         {
@@ -134,6 +137,11 @@ public class ProductServiceImpl implements ProductService{
         List<ProductDTO> productDTOS=productList.stream().map(product -> modelMapper.map(product,ProductDTO.class)).collect(Collectors.toList());
         ProductResponse productResponse=new ProductResponse();
         productResponse.setContent(productDTOS);
+        productResponse.setPageNumber(productPage.getNumber());
+        productResponse.setPageSize(productPage.getSize());
+        productResponse.setTotalElement(productPage.getTotalElements());
+        productResponse.setTotalPage(productPage.getTotalPages());
+        productResponse.setLastPage(productPage.isLast());
         return productResponse;
     }
 
