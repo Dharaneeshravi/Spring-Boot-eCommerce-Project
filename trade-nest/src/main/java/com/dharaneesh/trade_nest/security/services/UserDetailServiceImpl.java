@@ -1,6 +1,7 @@
 package com.dharaneesh.trade_nest.security.services;
 
 import com.dharaneesh.trade_nest.model.User;
+import com.dharaneesh.trade_nest.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
